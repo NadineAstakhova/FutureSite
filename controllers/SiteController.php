@@ -68,6 +68,7 @@ class SiteController extends Controller
             $this->redirect(['main'], 301):
             $this->redirect(['profile/index'], 301);
     }
+
     public function actionMain()
     {
         return $this->render('main');
@@ -83,9 +84,7 @@ class SiteController extends Controller
 
             if (isset($serviceName)) {
                 /** @var $eauth \nodge\eauth\ServiceBase */
-
                 $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
-                // $eauth->setRedirectUrl(Yii::$app->getUser()->getReturnUrl());
                 $eauth->setRedirectUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/indexface'));
                 $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
                 try {
@@ -96,12 +95,16 @@ class SiteController extends Controller
                         $identity = User::findByEAuth($eauth);
                         Yii::$app->getUser()->login($identity);
 
-                        //     \Yii::trace( "Facebook", $identity->getAttributes());
                         Yii::$app->session->set('eauth', $identity->getAttributes());
+                        $str =  substr($identity['id'], strpos($identity['id'], '-') + 1, strlen($identity['id']));
+                        //if this social user already exists
+                        if(User::existsSocialUser($str)){
+                            $user = User::findByUsername($identity['username']);
+                            //set new start session time
+                            User::setLastVisit($user->getId());
+                        }
 
-                       // Yii::$app->session->set('eauthUser', "true");
                         \Yii::trace("eauthId?", "tut");
-
 
                         // special redirect with closing popup window
                         $eauth->redirect();
@@ -113,9 +116,6 @@ class SiteController extends Controller
                     // save error to show it later
                     Yii::$app->getSession()->setFlash('error', 'EAuthException: ' . $e->getMessage());
                     echo $e->getMessage();
-                    // close popup window and redirect to cancelUrl
-                    ///           $eauth->cancel();
-
                 }
             }
 
@@ -132,10 +132,6 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-      //  $get = Yii::$app->session->get('idSession');
-      //  \Yii::trace( "ID?", $get);
-      //  User::setEndVisit($get);
-
         Yii::$app->user->logout();
         return $this->goHome();
     }
@@ -145,7 +141,6 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
         return $this->render('contact', [
@@ -189,6 +184,8 @@ class SiteController extends Controller
         }
 
     }
+
+    //enter for social user profile
     public function actionIndexface(){
         $getId = Yii::$app->session->get('eauthId');
         $model = User::findByEAuth($getId);
@@ -202,10 +199,8 @@ class SiteController extends Controller
             $userF->username = $model['username'];
             $userF->insertData($str);
         }
-        $idSocialUser = Yii::$app->session->get('idSocialUser');
-        User::setLastVisit($idSocialUser);
-
-
+        //$idSocialUser = Yii::$app->session->get('idSocialUser');
+        //User::setLastVisit($idSocialUser);
         return $this->render('indexface');
     }
 }

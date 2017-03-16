@@ -80,7 +80,9 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
+            //find user in db
             $this->_user = User::findByUsername($this->username);
+            //set start time of session
             User::setLastVisit( $this->_user->getId());
         }
 

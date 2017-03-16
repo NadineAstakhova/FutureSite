@@ -68,10 +68,7 @@ AppAsset::register($this);
     NavBar::end();
     $identity = Yii::$app->getUser()->getIdentity();
     if (isset($identity->profile)) {
-        echo '<div class="container">';
-        echo '<strong>EAuth profile:</strong><br/>';
-        VarDumper::dump($identity->profile, 10, true);
-        echo '</div>';
+      //  VarDumper::dump($identity->profile, 10, true);
     }
     ?>
 

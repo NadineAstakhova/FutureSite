@@ -302,8 +302,12 @@ class User extends  ActiveRecord implements \yii\web\IdentityInterface
                 'status' => 1,
                 'social' => $social,
             ])->execute();
-            if($result != null)
+            if($result != null) {
+                //first enter for social user
+                $user = User::findByUsername($this->username);
+                User::setLastVisit($user->getId());
                 return true;
+            }
             else
                 return false;
         }

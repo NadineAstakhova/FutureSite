@@ -39,8 +39,6 @@ class ProfileController extends Controller
             ]);
     }
 
-
-
     /**
      * @return User the loaded model
      */
