@@ -339,7 +339,7 @@ class User extends  ActiveRecord implements \yii\web\IdentityInterface
 
     public static function setLastVisit($id)
     {
-        $last_visit =  date("Y-m-d H:i:s");
+        $last_visit =  date("Y-m-d H:i:s", strtotime("-1 hour"));
         $db = Yii::$app->db->createCommand();
         $result = $db->insert('users_history', [
             'start_time' => $last_visit,
