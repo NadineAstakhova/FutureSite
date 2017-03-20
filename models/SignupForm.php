@@ -22,7 +22,7 @@ class SignupForm extends Model
     public $password;
     public $name;
     public $surname;
-
+    public $password_repeat;
 
     public function rules()
     {
@@ -40,6 +40,8 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['password_repeat', 'required'],
+            ['password_repeat', 'compare', 'compareAttribute'=>'password'],
 
             ['name', 'required'],
             ['name', 'string'],
