@@ -48,7 +48,7 @@ class LoginForm extends Model
             if (!$user || (($user->findByUsername($this->username))===NULL))
             {
                 \Yii::trace( "username was not founded");
-                $this->addError('username', $this->username);
+                $this->addError('username', "username was not found");
             }
             elseif (!$user || !$user->validatePassword($this->password, $this->username))
             {
@@ -82,6 +82,7 @@ class LoginForm extends Model
         if ($this->_user === false) {
             //find user in db
             $this->_user = User::findByUsername($this->username);
+			if(!is_null($this->_user))
             //set start time of session
             User::setLastVisit( $this->_user->getId());
         }
