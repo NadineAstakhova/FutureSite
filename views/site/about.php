@@ -4,8 +4,6 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
-$this->params['breadcrumbs'][] = $this->title;
 
 
 
@@ -15,10 +13,11 @@ $getModel = Yii::$app->session->get('serviceName');
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
+<?php
+   echo "<div class='alert alert-success' role='alert'>
+        На Ваш Email отправлено письмо для подтверждения регистрации.
+    </div>";
+	?>
 
-    <p>
-        This is the About page. You may modify the following file to customize its content:
-    </p>
-
-    <code><?= __FILE__ ?></code>
+    
 </div>

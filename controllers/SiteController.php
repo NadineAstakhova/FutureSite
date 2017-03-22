@@ -159,7 +159,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 Yii::$app->getSession()->setFlash('success', 'Подтвердите ваш электронный адрес.');
-                return $this->goHome();
+                return $this->render('about');
             }
         }
 
