@@ -61,6 +61,8 @@ class RSA
 
         return true;
     }
+	function GCD(){
+	}
 
 
 }
