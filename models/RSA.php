@@ -21,7 +21,7 @@ class RSA
 
     public function generateKey(){
         $this->generateTwoPrimeNumbers();
-        echo " ".$this->p. " ". $this->q. "<br>";
+     //   echo " ".$this->p. " ". $this->q. "<br>";
         $this->fi = $this->findFI($this->p, $this->q);
         echo  "<br> FI ";
         echo  $this->fi;
@@ -40,8 +40,9 @@ class RSA
      * Random generate two number and check if its are prime
      */
     public function generateTwoPrimeNumbers(){
-        $this->p = rand(1,1000);
-        $this->q = rand(1,1000);
+        $this->p = mt_rand(1,1000);
+        $this->q = mt_rand(1,1000);
+
 
         //if ($this->p == $this->q || !$this->isPrime($this->p, 10) || !$this->isPrime($this->q, 10))
         if ($this->p == $this->q || gmp_prob_prime($this->p) == 0 || gmp_prob_prime($this->q) == 0)
@@ -160,8 +161,9 @@ class RSA
         $m = array();
         for ($i = 0; $i < count($arr); $i++){
             $v = ord($arr[$i]);
-            echo $v." ";
+
             $m[$i] = bcpowmod($v, $x, $n);
+            echo $m[$i]." ";
 
         }
         echo "<br>";
@@ -169,14 +171,14 @@ class RSA
         return $m;
     }
 
-    public function decrypt ($c, $y, $x, $n) {
+    public function decrypt ($c,  $n) {
 
         $code = array();
-        $xy = $x * $y;
+        $k= $this->getPrivateKey();
         for ($i = 0; $i < count($c); $i++){
            // $code[$i] = bcpowmod($c[$i], $y * $x, $n);
             //echo $c[$i]. " ".$xy;
-            $code[$i] = chr(bcmod(gmp_pow($c[$i], $y), $this->n));
+            $code[$i] = chr(bcmod(gmp_pow($c[$i], $k[1]), $this->n));
             echo $code[$i];
 
             //$code[$i] =bcmod(bcpow($c[$i], $xy), $this->n);
