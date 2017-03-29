@@ -159,6 +159,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 Yii::$app->getSession()->setFlash('success', 'Подтвердите ваш электронный адрес.');
+                //chose correct page
                 return $this->render('about');
             }
         }
@@ -203,4 +204,10 @@ class SiteController extends Controller
         //User::setLastVisit($idSocialUser);
         return $this->render('indexface');
     }
+
+    public function actionCrypt(){
+        return $this->render('crypt');
+    }
+
+
 }

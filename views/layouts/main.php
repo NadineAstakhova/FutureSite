@@ -42,7 +42,7 @@ AppAsset::register($this);
             Yii::$app->user->isGuest ?
                 ['label' => 'Home', 'url' => ['/site/main']] :
                 false,
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'RSA', 'url' => ['/site/crypt']],
 
             Yii::$app->user->isGuest ?
                 ['label' => 'Sign Up', 'url' => ['/site/signup']] :
